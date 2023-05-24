@@ -1,33 +1,54 @@
+# Imports
 import os
 
 different = False
+firstDifferentLine = ""
+secondDifferentLine = ""
+
 # Get file names form users
 fileName1 = input("What file do you want to select? ")
 fileName2 = input("What file do you want to compare? ")
 
 # Reading in files
-sample0 = open("./lab/" + fileName1, "r")
-sample1 = open("./lab/" + fileName2, "r")
+firstFile = open(fileName1, "r")
+secondFile = open(fileName2, "r")
 
 # Breaking up files into a list of lines
-sample0Text = sample0.read()
-sample0Lines = sample0Text.split("\n")
+#firstText = firstFile.read()
+#firstFileLines = firstText.split("\n")
+firstFileLines = firstFile.readlines()
 
-sample1Text = sample1.read()
-sample1Lines = sample1Text.split("\n")
+#secondText = secondFile.read()
+#secondFileLines = secondText.split("\n")
+secondFileLines = secondFile.readlines()
 
-for sample1Line in sample0Lines:
-    for sample2Line in sample1Lines:
-        if(sample1Line == sample2Line):
-            print("Yes")
-        else:
-            print("No")
-            different = True
-            break
-        
-os.mkdir("./lab/Reports")
+# Loop breaks when lines do not match
+for i in range(len(firstFileLines)):
+	if(firstFileLines[i] == secondFileLines[i]):
+		print("Yes")
+	else:
+		print("No")
+		firstDifferentLine = firstFileLines[i]
+		secondDifferentLine = secondFileLines[i]
+		different = True
+	 
+	if(different):
+		break
 
+# Checking if Reports folder exists and creating if it doesn't
+if not os.path.exists("Reports"):   
+	os.mkdir("Reports")
+
+# Creating report files based whether or not all lines in both files match
 if(different):
-    diffResult = open("./lab/Reports/sampleDifferent.txt", "W")
-    different.write(fileName1 + "is not the same as " + fileName2)
-            
+	result = open("Reports/sampleDifferent.txt", "w")
+	result.write(fileName1 + " is not the same as " + fileName2 + ".\nThey differ at the following lines:\n")
+	result.write(fileName1 + ": " + firstDifferentLine)
+	result.write(fileName2 + ": " + secondDifferentLine)
+	result.truncate()
+	result.close()
+else:
+	result = open("Reports/sampleSame.txt", "w")
+	result.write(fileName1 + " is the same as " + fileName2)
+	result.truncate()
+	result.close()

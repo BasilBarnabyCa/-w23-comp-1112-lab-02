@@ -1,0 +1,4 @@
+sample.txt is not the same as sample1.txt.
+They differ at the following lines:
+sample.txt: born, an what my lousy childhood was like, and how my parents were occupied and all before
+sample1.txt: %NOT THE SAME%
